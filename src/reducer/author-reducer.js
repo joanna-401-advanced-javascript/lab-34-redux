@@ -3,9 +3,12 @@ export default (state = [], {type, payload}) => {
   case 'AUTHOR_CREATE':
     return [...state, payload];
   case 'AUTHOR_UPDATE':
-    //TODO:--------------------------------------------------------
-    // Use a map
-    break;
+    return state.map((author) => {
+      if(author.id === payload.id){
+        author.name = payload.name;
+      }
+      return author;
+    });
   case 'AUTHOR_DELETE':
     //TODO:--------------------------------------------------------
     // Use a filter

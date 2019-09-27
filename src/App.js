@@ -7,15 +7,17 @@ const uuid = require('uuid/v4');
 class App extends React.Component {
   constructor(props){
     super(props);
-    this.state = {};
-    this.state.author = '';
-    this.state.id = '';
-    this.state.timeStamp = '';
+    this.state = {
+      author: '',
+      id: '',
+      timeStamp: '',
+    };
+    this.state.temp = '';
   }
 
  handleChange = (event) => {
-   const {value} = event.target;
-   this.setState({author: value});
+   const {name, value} = event.target;
+   this.setState({[name]: value});
  };
 
  handleSubmit = (event) => {
@@ -25,16 +27,34 @@ class App extends React.Component {
    this.props.createNewAuthor({name: this.state.author, id: authorId, timeStamp: timeStamp});
  };
 
+ handleUpdate = (event, id) => {
+   event.preventDefault();
+   this.props.updateAuthor({name: this.state.temp, id: id});
+ };
+
  render() {
    return(
       <>
         {
           this.props.authors.map((author, i) =>
-            <li key={i}>{author.name}</li>
+            <React.Fragment key={i}>
+              <li>{author.name}</li>
+              <form onSubmit={(event) => this.handleUpdate(event, author.id)}>
+                <input
+                  name='temp'
+                  type='text'
+                  value={this.state.temp}
+                  onChange={this.handleChange}
+                  placeholder='Type here...'
+                />
+                <button type='submit'>Update</button>
+              </form>
+            </React.Fragment>
           )
         }
         <form onSubmit={this.handleSubmit}>
           <input
+            name='author'
             type='text'
             value={this.state.author}
             onChange={this.handleChange}
@@ -55,10 +75,16 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createNewAuthor: ({name, id, timeStamp}) => {
+    createNewAuthor: (authorInfo) => {
       dispatch({
         type: 'AUTHOR_CREATE',
-        payload: {name, id, timeStamp},
+        payload: authorInfo,
+      });
+    },
+    updateAuthor: (updatedInfo) => {
+      dispatch({
+        type: 'AUTHOR_UPDATE',
+        payload: updatedInfo,
       });
     },
   };
