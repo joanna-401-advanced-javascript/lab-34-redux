@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import './stylesheets/App.css';
+
+const uuid = require('uuid/v4');
 
 class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {};
     this.state.author = '';
+    this.state.id = '';
+    this.state.timeStamp = '';
   }
 
  handleChange = (event) => {
@@ -17,7 +20,9 @@ class App extends React.Component {
 
  handleSubmit = (event) => {
    event.preventDefault();
-   this.props.createNewAuthor(this.state.author);
+   const authorId = uuid();
+   const timeStamp = Math.floor(Date.now() / 1000);
+   this.props.createNewAuthor({name: this.state.author, id: authorId, timeStamp: timeStamp});
  };
 
  render() {
@@ -25,7 +30,7 @@ class App extends React.Component {
       <>
         {
           this.props.authors.map((author, i) =>
-            <li key={i}>{author}</li>
+            <li key={i}>{author.name}</li>
           )
         }
         <form onSubmit={this.handleSubmit}>
@@ -50,10 +55,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createNewAuthor: (authorName) => {
+    createNewAuthor: ({name, id, timeStamp}) => {
       dispatch({
         type: 'AUTHOR_CREATE',
-        payload: authorName,
+        payload: {name, id, timeStamp},
       });
     },
   };
