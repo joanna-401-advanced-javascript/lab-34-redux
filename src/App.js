@@ -48,7 +48,6 @@ class App extends React.Component {
                 <input
                   name='temp'
                   type='text'
-                  value={this.state.temp}
                   onChange={this.handleChange}
                   placeholder='Type here...'
                 />
