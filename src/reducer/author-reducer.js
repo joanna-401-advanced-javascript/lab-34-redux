@@ -10,9 +10,8 @@ export default (state = [], {type, payload}) => {
       return author;
     });
   case 'AUTHOR_DELETE':
-    //TODO:--------------------------------------------------------
-    // Use a filter
-    break;
+    console.log(payload);
+    return state.filter((author) => author.id !== payload.id);
   default:
     return state;
   }

@@ -32,6 +32,11 @@ class App extends React.Component {
    this.props.updateAuthor({name: this.state.temp, id: id});
  };
 
+ handleDelete = (event, id) => {
+   event.preventDefault();
+   this.props.deleteAuthor({id: id});
+ };
+
  render() {
    return(
       <>
@@ -48,6 +53,7 @@ class App extends React.Component {
                   placeholder='Type here...'
                 />
                 <button type='submit'>Update</button>
+                <button type='submit' onClick={(event) => this.handleDelete(event, author.id)}>Delete</button>
               </form>
             </React.Fragment>
           )
@@ -85,6 +91,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: 'AUTHOR_UPDATE',
         payload: updatedInfo,
+      });
+    },
+    deleteAuthor: (authorId) => {
+      dispatch({
+        type: 'AUTHOR_DELETE',
+        payload: authorId,
       });
     },
   };
