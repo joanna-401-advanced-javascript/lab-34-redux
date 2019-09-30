@@ -9,6 +9,8 @@ export default (state = [], {type, payload}) => {
       }
       return author;
     });
+    // Vinicio - try this
+    // Return state.map((author => author.id === payload.id ? payload : car);
   case 'AUTHOR_DELETE':
     return state.filter((author) => author.id !== payload.id);
   default:
